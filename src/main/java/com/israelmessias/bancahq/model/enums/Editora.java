@@ -1,6 +1,6 @@
 package com.israelmessias.bancahq.model.enums;
 
-public enum Genero {
+public enum Editora {
     MARVEL,
     DC
 }
