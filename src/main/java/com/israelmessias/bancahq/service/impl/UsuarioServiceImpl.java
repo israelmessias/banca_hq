@@ -5,6 +5,7 @@ import com.israelmessias.bancahq.model.entity.Usuario;
 import com.israelmessias.bancahq.model.repository.UsuarioRepository;
 import com.israelmessias.bancahq.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -30,17 +31,24 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    @Transactional
     public Usuario salvarUsuario(Usuario usuario) {
-        return null;
+        validarEmail(usuario.getEmail());
+        return repository.save(usuario);
     }
 
     @Override
     public void validarEmail(String email) {
+       Boolean emailExistente =  repository.existsByEmail(email);
 
+       if(emailExistente)
+       {
+           throw new ErroAutenticar("Email existente");
+       }
     }
 
     @Override
     public Optional<Usuario> obterPorId(Long id) {
-        return Optional.empty();
+        return repository.findById(id);
     }
 }
