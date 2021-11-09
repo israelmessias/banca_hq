@@ -1,5 +1,6 @@
 package com.israelmessias.bancahq.service.impl;
 
+import com.israelmessias.bancahq.excecao.ErroAutenticar;
 import com.israelmessias.bancahq.model.entity.Usuario;
 import com.israelmessias.bancahq.model.repository.UsuarioRepository;
 import com.israelmessias.bancahq.service.UsuarioService;
@@ -15,7 +16,17 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario autenticar(String email, String senha) {
         Optional<Usuario> usuario = repository.findByEmail(email);
-        return null;
+        //Se não for encontrado email
+        if(!usuario.isPresent())
+        {
+            throw new ErroAutenticar("Email do usuario não encotrado ou inexistente");
+        }
+
+        if(!usuario.get().getSenha().equals(senha))
+        {
+            throw new ErroAutenticar("Senha invalida");
+        }
+        return usuario.get();
     }
 
     @Override
